@@ -5,7 +5,7 @@ export type CatDocument = HydratedDocument<Cat>;
 
 @Schema()
 export class Cat {
-  @Prop()
+  @Prop({ unique: true })
   name: string;
 
   @Prop()
@@ -13,6 +13,9 @@ export class Cat {
 
   @Prop()
   breed: string;
+
+  @Prop()
+  available: boolean;
 }
 
 export const CatSchema = SchemaFactory.createForClass(Cat);

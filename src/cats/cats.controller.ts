@@ -8,10 +8,13 @@ import {
   Delete,
   UsePipes,
   ValidationPipe,
+  Query,
 } from '@nestjs/common';
 import { CatsService } from './cats.service';
 import { CreateCatDto } from './dto/create-cat.dto';
 import { UpdateCatDto } from './dto/update-cat.dto';
+import { GetCatsFilterDto } from './dto/get-cats-filter.dto';
+import { UpdateCatAvailabilityDto } from './dto/update-cat-availability.dto';
 
 @Controller('cats')
 export class CatsController {
@@ -19,27 +22,43 @@ export class CatsController {
 
   @UsePipes(new ValidationPipe())
   @Post('create')
-  async create(@Body() createCatDto: CreateCatDto) {
+  async createCat(@Body() createCatDto: CreateCatDto) {
     return this.catsService.create(createCatDto);
   }
 
+  @UsePipes(new ValidationPipe())
   @Get()
-  findAll() {
-    return this.catsService.findAll();
+  async findAllCats(@Query() filterDto: GetCatsFilterDto) {
+    if (Object.keys(filterDto).length) {
+      return this.catsService.getCatsWithFilters(filterDto);
+    } else {
+      return this.catsService.findAll();
+    }
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.catsService.findOne(id);
+    return this.catsService.findOneCat(id);
   }
 
+  @UsePipes(new ValidationPipe())
   @Patch('update/:id')
-  update(@Param('id') id: string, @Body() updateCatDto: UpdateCatDto) {
+  async updateCat(@Param('id') id: string, @Body() updateCatDto: UpdateCatDto) {
     return this.catsService.update(id, updateCatDto);
   }
 
   @Delete('delete/:id')
   async deleteCat(@Param('id') id: string) {
     return this.catsService.deleteCat(id);
+  }
+
+  @UsePipes(new ValidationPipe())
+  @Patch('/:id/availability')
+  async updateCatAvailability(
+    @Param('id') id: string,
+    @Body() updateCatAvailabilityDto: UpdateCatAvailabilityDto,
+  ) {
+    const { available } = updateCatAvailabilityDto;
+    return this.catsService.updateCatAvailability(id, available);
   }
 }
