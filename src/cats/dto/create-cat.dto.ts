@@ -1,6 +1,5 @@
 import { IsBoolean, IsNotEmpty, IsNumber, Validate } from 'class-validator';
 import { IsUnique } from './validators/is-unique.validator';
-import { Cat } from '../schemas/cat.schema';
 
 export class CreateCatDto {
   @IsNotEmpty()

@@ -15,7 +15,7 @@ export class CatsService {
     return createdCat.save();
   }
 
-  async findAll() {
+  async findAll(): Promise<Cat[]> {
     return await this.catModel.find().exec();
   }
 
@@ -64,12 +64,11 @@ export class CatsService {
     return cat;
   }
 
-  async deleteCat(id: string) {
+  async deleteCat(id: string): Promise<void> {
     const cat = await this.catModel.findByIdAndDelete(id);
     if (!cat) {
       throw new NotFoundException();
     }
-    return cat;
   }
 
   async updateCatAvailability(id: string, available: boolean): Promise<Cat> {

@@ -15,7 +15,6 @@ export class IsUnique implements ValidatorConstraintInterface {
 
   async validate(value: any, args: ValidationArguments) {
     const [field] = args.constraints;
-    console.log(this.catModel);
     const record = await this.catModel.findOne({ [field]: value });
     return !record;
   }
