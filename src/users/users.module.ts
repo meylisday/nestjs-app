@@ -18,7 +18,7 @@ import { UsersController } from './users.controller';
       autoLoadEntities: true,
       synchronize: true,
     }),
-    TypeOrmModule.forFeature([User]),
+    TypeOrmModule.forFeature([UsersRepository]),
   ],
   providers: [UsersService, UsersRepository],
   controllers: [UsersController],

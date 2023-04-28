@@ -1,5 +1,4 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
 import { User } from './entitites/user.entity';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UsersRepository } from './repositories/users.repository';
@@ -7,10 +6,7 @@ import { GetUsersFilterDto } from './dto/get-users-filter.dto';
 
 @Injectable()
 export class UsersService {
-  constructor(
-    @InjectRepository(UsersRepository)
-    private usersRepository: UsersRepository,
-  ) {}
+  constructor(private usersRepository: UsersRepository) {}
 
   async getUserById(id: string): Promise<User> {
     const user = await this.usersRepository.findOneBy({ id });

@@ -9,6 +9,7 @@ import {
   UsePipes,
   ValidationPipe,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { CatsService } from './cats.service';
 import { CreateCatDto } from './dto/create-cat.dto';
@@ -16,8 +17,10 @@ import { UpdateCatDto } from './dto/update-cat.dto';
 import { GetCatsFilterDto } from './dto/get-cats-filter.dto';
 import { UpdateCatAvailabilityDto } from './dto/update-cat-availability.dto';
 import { Cat } from './schemas/cat.schema';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('cats')
+@UseGuards(AuthGuard())
 export class CatsController {
   constructor(private readonly catsService: CatsService) {}
 

@@ -1,8 +1,13 @@
 import { DataSource, Repository } from 'typeorm';
 import { User } from '../entitites/user.entity';
 import { CreateUserDto } from '../dto/create-user.dto';
-import { Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { GetUsersFilterDto } from '../dto/get-users-filter.dto';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersRepository extends Repository<User> {
@@ -30,12 +35,24 @@ export class UsersRepository extends Repository<User> {
   async createUser(createUserDto: CreateUserDto): Promise<User> {
     const { username, email, password } = createUserDto;
 
+    const salt = await bcrypt.genSalt();
+    const hashedPassword = await bcrypt.hash(password, salt);
+
     const user = this.create({
       username,
       email,
-      password,
+      password: hashedPassword,
     });
-    await this.save(user);
-    return user;
+
+    try {
+      await this.save(user);
+      return user;
+    } catch (error) {
+      if (error.code === '23505') {
+        throw new ConflictException('Username already exists');
+      } else {
+        throw new InternalServerErrorException();
+      }
+    }
   }
 }
