@@ -6,8 +6,6 @@ import {
   Param,
   Post,
   Query,
-  UsePipes,
-  ValidationPipe,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { User } from './entitites/user.entity';
@@ -23,7 +21,6 @@ export class UsersController {
     return this.usersService.getUserById(id);
   }
 
-  @UsePipes(new ValidationPipe())
   @Post('create')
   createUser(@Body() createUserDto: CreateUserDto): Promise<User> {
     return this.usersService.createUser(createUserDto);

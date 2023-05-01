@@ -6,8 +6,6 @@ import {
   Patch,
   Param,
   Delete,
-  UsePipes,
-  ValidationPipe,
   Query,
   UseGuards,
 } from '@nestjs/common';
@@ -18,21 +16,22 @@ import { GetCatsFilterDto } from './dto/get-cats-filter.dto';
 import { UpdateCatAvailabilityDto } from './dto/update-cat-availability.dto';
 import { Cat } from './schemas/cat.schema';
 import { AuthGuard } from '@nestjs/passport';
+import { Logger } from '@nestjs/common';
 
 @Controller('cats')
 @UseGuards(AuthGuard())
 export class CatsController {
+  private logger = new Logger('CatsController');
   constructor(private readonly catsService: CatsService) {}
 
-  @UsePipes(new ValidationPipe())
   @Post('create')
   async createCat(@Body() createCatDto: CreateCatDto): Promise<Cat> {
     return this.catsService.create(createCatDto);
   }
 
-  @UsePipes(new ValidationPipe())
   @Get()
   async findAllCats(@Query() filterDto: GetCatsFilterDto): Promise<Cat[]> {
+    this.logger.verbose(JSON.stringify(filterDto));
     if (Object.keys(filterDto).length) {
       return this.catsService.getCatsWithFilters(filterDto);
     } else {
@@ -41,11 +40,10 @@ export class CatsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string): Promise<Cat> {
+  async findOne(@Param('id') id: string): Promise<Cat> {
     return this.catsService.findOneCat(id);
   }
 
-  @UsePipes(new ValidationPipe())
   @Patch('update/:id')
   async updateCat(
     @Param('id') id: string,
@@ -59,7 +57,6 @@ export class CatsController {
     return this.catsService.deleteCat(id);
   }
 
-  @UsePipes(new ValidationPipe())
   @Patch('/:id/availability')
   async updateCatAvailability(
     @Param('id') id: string,

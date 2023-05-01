@@ -8,9 +8,12 @@ import {
 } from '@nestjs/common';
 import { GetUsersFilterDto } from '../dto/get-users-filter.dto';
 import * as bcrypt from 'bcrypt';
+import { Logger } from '@nestjs/common';
+import { error } from 'console';
 
 @Injectable()
 export class UsersRepository extends Repository<User> {
+  private logger = new Logger(' UsersRepository', { timestamp: true });
   constructor(private dataSource: DataSource) {
     super(User, dataSource.createEntityManager());
   }
@@ -28,8 +31,16 @@ export class UsersRepository extends Repository<User> {
       );
     }
 
-    const users = query.getMany();
-    return users;
+    try {
+      const users = query.getMany();
+      return users;
+    } catch (error) {
+      this.logger.error(
+        `Failed to get tasks. Filters: ${filterDto}`,
+        error.stack,
+      );
+      throw new InternalServerErrorException();
+    }
   }
 
   async createUser(createUserDto: CreateUserDto): Promise<User> {

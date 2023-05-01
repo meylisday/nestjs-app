@@ -3,6 +3,7 @@ import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { AuthService } from './auth.service';
 import { User } from 'src/users/entitites/user.entity';
 import { AuthGuard } from '@nestjs/passport';
+import { SignInUserDto } from 'src/users/dto/signin-user.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -15,9 +16,9 @@ export class AuthController {
 
   @Post('signin')
   signIn(
-    @Body() createUserDto: CreateUserDto,
+    @Body() signInUserDto: SignInUserDto,
   ): Promise<{ accessToken: string }> {
-    return this.authService.signIn(createUserDto);
+    return this.authService.signIn(signInUserDto);
   }
 
   @Post('test')
