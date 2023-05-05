@@ -4,7 +4,7 @@ import { CatsService } from './cats.service';
 import { CatsController } from './cats.controller';
 import { Cat, CatSchema } from './schemas/cat.schema';
 import { IsUnique } from './dto/validators/is-unique.validator';
-import { AuthModule } from 'src/auth/auth.module';
+import { AuthModule } from '../auth/auth.module';
 
 @Module({
   imports: [
