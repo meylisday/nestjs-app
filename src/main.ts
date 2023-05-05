@@ -7,9 +7,9 @@ async function bootstrap() {
   const logger = new Logger();
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(new ValidationPipe());
-  await app.listen(3000);
+  const port = process.env.PORT;
+  await app.listen(port);
   useContainer(app.select(AppModule), { fallbackOnErrors: true });
-  const port = 3000;
   logger.log(`Application listetin on port ${port}`);
 }
 bootstrap();
