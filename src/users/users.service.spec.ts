@@ -6,6 +6,7 @@ import { NotFoundException } from '@nestjs/common';
 const mockUsersRepository = () => ({
   getUsers: jest.fn(),
   findOneBy: jest.fn(),
+  delete: jest.fn(),
 });
 
 const mockUserFilter = {
@@ -53,6 +54,13 @@ describe('UsersService', () => {
       expect(usersService.getUserById('someId')).rejects.toThrow(
         NotFoundException,
       );
+    });
+
+    it('calls userService.geleteUser and returns the result', async () => {
+      const userId = 'someId';
+      usersRepository.findOneBy.mockResolvedValue({ userId });
+      usersRepository.delete.mockResolvedValue(userId);
+      expect(usersService.deleteUser(userId)).toBeTruthy();
     });
   });
 });

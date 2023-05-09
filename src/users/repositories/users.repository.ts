@@ -9,7 +9,6 @@ import {
 import { GetUsersFilterDto } from '../dto/get-users-filter.dto';
 import * as bcrypt from 'bcrypt';
 import { Logger } from '@nestjs/common';
-import { error } from 'console';
 
 @Injectable()
 export class UsersRepository extends Repository<User> {
