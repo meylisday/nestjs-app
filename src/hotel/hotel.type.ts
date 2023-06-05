@@ -1,4 +1,5 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
+import { RoomType } from '../room/room.type';
 
 @ObjectType('Hotel')
 export class HotelType {
@@ -16,4 +17,7 @@ export class HotelType {
 
   @Field()
   rating: number;
+
+  @Field((type) => [RoomType])
+  rooms: string[];
 }

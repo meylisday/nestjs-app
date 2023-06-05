@@ -6,6 +6,8 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Hotel } from './hotel.entity';
 import { HotelService } from './hotel.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { Room } from 'src/room/room.entity';
+import { RoomModule } from 'src/room/room.module';
 
 @Module({
   imports: [
@@ -20,23 +22,17 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
           url: config.get('MONGODB_URI'),
           synchronize: true,
           useUnifiedTopology: true,
-          entities: [Hotel],
+          entities: [Hotel, Room],
         };
       },
       inject: [ConfigService],
     }),
-    // TypeOrmModule.forRootAsync({
-    //   type: 'mongodb',
-    //   url: 'mongodb://127.0.0.1:27017/hotel?readPreference=primary&ssl=false&directConnection=true',
-    //   synchronize: true,
-    //   useUnifiedTopology: true,
-    //   entities: [Hotel],
-    // }),
     TypeOrmModule.forFeature([Hotel]),
     GraphQLModule.forRoot({
       autoSchemaFile: true,
       driver: ApolloDriver,
     }),
+    RoomModule,
   ],
   providers: [HotelResolver, HotelService],
 })

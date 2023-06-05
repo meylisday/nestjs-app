@@ -19,4 +19,7 @@ export class Hotel {
 
   @Column()
   rating: number;
+
+  @Column()
+  rooms: string[];
 }
