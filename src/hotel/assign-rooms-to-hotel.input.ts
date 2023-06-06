@@ -8,6 +8,6 @@ export class AssignRoomsToHotelInput {
   hotelId: string;
 
   @IsUUID('4', { each: true })
-  @Field(type => [ID])
+  @Field((type) => [ID])
   roomsIds: string[];
 }

@@ -34,7 +34,9 @@ export class RoomService {
   async getManyRooms(roomsIds: string[]): Promise<Room[]> {
     return this.roomRepository.find({
       where: {
-        id: In(roomsIds),
+        id: {
+          $in: [...roomsIds],
+        } as any,
       },
     });
   }

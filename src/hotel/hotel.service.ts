@@ -12,7 +12,6 @@ export class HotelService {
   ) {}
 
   async getHotels(): Promise<Hotel[]> {
-    console.log(await this.hotelRepository.find());
     return this.hotelRepository.find();
   }
   async createHotel(createHotelInput: CreateHotelInput): Promise<Hotel> {
